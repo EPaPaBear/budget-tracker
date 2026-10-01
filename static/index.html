@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ledger — Budget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">L</div>
+        <div>
+          <div class="brand-name">Ledger</div>
+          <div class="brand-sub">50 / 30 / 20</div>
+        </div>
+      </div>
+
+      <button class="nav-item active" data-nav="dashboard">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Dashboard
+      </button>
+      <button class="nav-item" data-nav="categories">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3.5" cy="6" r="1.5"/><circle cx="3.5" cy="12" r="1.5"/><circle cx="3.5" cy="18" r="1.5"/></svg>
+        Allocations
+      </button>
+      <button class="nav-item" data-nav="log">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        Quick log
+      </button>
+      <button class="nav-item" data-nav="audits">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Audits
+      </button>
+      <button class="nav-item" data-nav="learn">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Learn
+      </button>
+
+      <div class="nav-spacer"></div>
+
+      <button class="theme-toggle" id="themeToggle">
+        <span>Theme</span>
+        <span id="themeLabel" class="mono">auto</span>
+      </button>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <!-- ======================= DASHBOARD ======================= -->
+      <section class="page active" id="page-dashboard">
+        <div class="topbar">
+          <div>
+            <h1 class="page-title">Dashboard</h1>
+            <div class="page-sub" id="dashSub">Your adaptive 50/30/20 plan</div>
+          </div>
+          <div class="row gap-sm">
+            <div class="month-nav">
+              <button class="btn icon" id="prevMonth" aria-label="Previous month">&#8249;</button>
+              <span class="mlabel" id="monthLabel">—</span>
+              <button class="btn icon" id="nextMonth" aria-label="Next month">&#8250;</button>
+            </div>
+            <button class="btn primary" id="editIncome">Set income</button>
+          </div>
+        </div>
+
+        <div id="dashBody"></div>
+      </section>
+
+      <!-- ======================= ALLOCATIONS ======================= -->
+      <section class="page" id="page-categories">
+        <div class="topbar">
+          <div>
+            <h1 class="page-title">Allocations</h1>
+            <div class="page-sub">Zero-based envelopes — every cedi assigned. Daily-variable lines are flagged for logging.</div>
+          </div>
+          <button class="btn primary" id="addCategory">+ Add category</button>
+        </div>
+        <div id="catBody"></div>
+      </section>
+
+      <!-- ======================= QUICK LOG ======================= -->
+      <section class="page" id="page-log">
+        <div class="topbar">
+          <div>
+            <h1 class="page-title">Quick log</h1>
+            <div class="page-sub">Log actual spend fast. Running actuals vs plan update live.</div>
+          </div>
+        </div>
+        <div class="grid grid-2">
+          <div class="card pad-lg">
+            <div class="card-title" style="margin-bottom:16px">Log a transaction</div>
+            <div class="fields" style="display:grid;gap:13px">
+              <label class="fld"><span class="lbl">Category</span><select id="logCategory"></select></label>
+              <div class="grid grid-2">
+                <label class="fld"><span class="lbl">Amount (₵)</span><input type="number" class="num" id="logAmount" placeholder="0" step="1" min="0"/></label>
+                <label class="fld"><span class="lbl">Date</span><input type="date" id="logDate"/></label>
+              </div>
+              <label class="fld"><span class="lbl">Note (optional)</span><input type="text" id="logNote" placeholder="e.g. trotro to work"/></label>
+              <button class="btn primary" id="logSubmit">Log spend</button>
+            </div>
+            <div class="mt">
+              <div class="card-title" style="margin-bottom:12px">Record a paycheck</div>
+              <div class="grid grid-2">
+                <label class="fld"><span class="lbl">Paycheck (₵)</span><input type="number" class="num" id="payAmount" placeholder="0"/></label>
+                <label class="fld"><span class="lbl">Pay date</span><input type="date" id="payDate"/></label>
+              </div>
+              <button class="btn mt-sm" id="paySubmit">Add paycheck</button>
+              <div class="card-hint mt-sm">Recorded paychecks track what actually landed. Your monthly target income is set on the dashboard.</div>
+            </div>
+          </div>
+          <div class="card pad-lg">
+            <div class="card-head">
+              <div class="card-title">Recent transactions</div>
+              <span class="card-hint" id="logMonthHint"></span>
+            </div>
+            <div id="logList"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= AUDITS ======================= -->
+      <section class="page" id="page-audits">
+        <div class="topbar">
+          <div>
+            <h1 class="page-title">Audits</h1>
+            <div class="page-sub">Daily check, end-of-week review, end-of-month close — the cadence that keeps the plan honest.</div>
+          </div>
+          <div class="chip-group" id="auditTabs">
+            <button class="chip active" data-audit="daily">Daily</button>
+            <button class="chip" data-audit="weekly">Weekly</button>
+            <button class="chip" data-audit="monthly">Monthly close</button>
+          </div>
+        </div>
+        <div id="auditBody"></div>
+      </section>
+
+      <!-- ======================= LEARN ======================= -->
+      <section class="page" id="page-learn">
+        <div class="topbar">
+          <div>
+            <h1 class="page-title">Learn</h1>
+            <div class="page-sub">Bite-sized finance concepts, contextualized for Ghana. Mark what you've learned.</div>
+          </div>
+          <span class="pill neutral" id="learnProgress"><span class="dot"></span> 0 / 0 learned</span>
+        </div>
+        <div id="learnBody"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="modalRoot"></div>
+  <div class="toast" id="toast"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
